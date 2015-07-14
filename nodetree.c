@@ -27,12 +27,16 @@ Node* NewNode()
 {
     Node* n = NULL;
 
+    // Semi-voodoo
     int ec = 0;
     while (n == NULL)
     {
             n = malloc(sizeof(Node));
             ec++;
-            if (ec >= 3) exit(1);
+            if (ec >= 3)
+            {
+                exit(1);
+            }
     }
 
     n->name = "unnamed";
