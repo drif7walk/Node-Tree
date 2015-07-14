@@ -1,6 +1,13 @@
 /*
 A node tree structure where every node can have an unspecified
 number of child nodes
+
+Don't mind the warnings about uninitialized nodes,
+When declared a pointer is undefined, that means that it 
+exists as a number, however the number has not been set yet.
+When NewNode is called then the number, or, pointer value of the
+newly declared Node is set to what ever malloc returns that is 
+a number (pointer) to the block of memory malloc() just freed.
 */
 
 #include <stdio.h>
