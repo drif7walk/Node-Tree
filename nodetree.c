@@ -26,8 +26,14 @@ typedef struct Node Node;
 Node* NewNode()
 {
     Node* n = NULL;
+
+    int ec = 0;
     while (n == NULL)
-        n = malloc(sizeof(Node));
+    {
+            n = malloc(sizeof(Node));
+            ec++;
+            if (ec >= 3) exit(1);
+    }
 
     n->name = "unnamed";
     n->children = NULL;
