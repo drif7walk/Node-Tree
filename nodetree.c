@@ -74,7 +74,7 @@ Finds the last node and adds n as its next.
 void AddNode(Node* target, Node* n)
 {
     Node* last = GetLastNodeInLine(target);
-    target->next = n;
+    last->next = n;
 }
 
 /*
