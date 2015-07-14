@@ -3,10 +3,10 @@ A node tree structure where every node can have an unspecified
 number of child nodes
 
 Don't mind the warnings about uninitialized nodes,
-When declared a pointer is undefined, that means that it 
+When declared a pointer is undefined, that means that it
 exists as a number, however the number has not been set yet.
 When NewNode is called then the number, or, pointer value of the
-newly declared Node is set to what ever malloc returns that is 
+newly declared Node is set to what ever malloc returns that is
 a number (pointer) to the block of memory malloc() just freed.
 */
 
@@ -19,16 +19,18 @@ struct Node
 	struct Node* children;
 	struct Node* parent;
 	struct Node* next;
+	void (*updateSelf)(struct Node* self);
 };
 typedef struct Node Node;
 
-Node* NewNode(Node* n)
+Node* NewNode()
 {
-    n = malloc(sizeof(Node));
+    Node* n = malloc(sizeof(Node));
     n->name = "unnamed";
     n->children = NULL;
     n->parent = NULL;
     n->next = NULL;
+    n->updateSelf = NULL;
 
     return n;
 }
@@ -38,12 +40,11 @@ void TraverseTree(Node* parent)
 {
     Node* current = parent;
 
-    // Do something with the current node
-    // current->Updateorwhatever();
-
     while(1)
     {
-        printf("Current node: %s\r\n", current->name);
+        /* Do updating/process node */
+        if (current->updateSelf != NULL)
+            current->updateSelf(current);
 
         if (current->next != NULL)
         {
@@ -114,16 +115,23 @@ void FreeNodes(Node* rootNode)
     current = NULL;
 }
 
+void _updateSelf(Node* self)
+{
+    printf("self name: %s\r\n", self->name);
+}
+
 int main()
 {
-    Node* root = NewNode(root);
+    Node* root = NewNode();
     root->name = "root node";
+    root->updateSelf = _updateSelf;
 
-    Node* firstchild = NewNode(firstchild);
+    Node* firstchild = NewNode();
     firstchild->name = "first child";
 
-    Node* childschild = NewNode(childschild);
+    Node* childschild = NewNode();
     childschild->name = "childs child";
+    childschild->updateSelf = _updateSelf;
 
     AddNode(root, firstchild);
     AddNode(firstchild, childschild);
@@ -134,3 +142,5 @@ int main()
 
     return 0;
 }
+
+
