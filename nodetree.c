@@ -25,7 +25,10 @@ typedef struct Node Node;
 
 Node* NewNode()
 {
-    Node* n = malloc(sizeof(Node));
+    Node* n = NULL;
+    while (n == NULL)
+        n = malloc(sizeof(Node));
+
     n->name = "unnamed";
     n->children = NULL;
     n->parent = NULL;
