@@ -12,8 +12,6 @@ struct Node
 	struct Node* children;
 	struct Node* parent;
 	struct Node* next;
-
-	float parentOffset[3]; // X Y Z offset from parent
 };
 typedef struct Node Node;
 
