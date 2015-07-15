@@ -49,7 +49,7 @@ Node* NewNode()
 }
 
 
-void TraverseTree(Node* parent)
+void TraverseNodeTree(Node* parent)
 {
     Node* current = parent;
 
@@ -57,13 +57,16 @@ void TraverseTree(Node* parent)
     {
         /* Do updating/process node */
         if (current->updateSelf != NULL)
-            current->updateSelf(current);
+            current->updateSelf(current, deltat);
+		
+		if (current->children != NULL)
+			TraverseNodeTree(current->children);
 
         if (current->next != NULL)
         {
                 current = current->next;
-                if (current->children != NULL)
-                    TraverseTree(current->children);
+                
+                    
         }
         else
             break;
@@ -94,8 +97,31 @@ Finds the last node and adds n as its next.
 */
 void AddNode(Node* target, Node* n)
 {
+    if (target == NULL)
+    {
+        target = n;
+        return;
+    }
+
     Node* last = GetLastNodeInLine(target);
     last->next = n;
+    n->next = NULL;
+
+}
+void AddChild(Node* target, Node* n)
+{
+    if (target->children == NULL)
+    {
+        target->children = n;
+        target->children->parent = target;
+        return;
+    }
+
+    Node* last = target->children;
+    last = GetLastNodeInLine(last);
+    last->next = n;
+    last->next->parent = target;
+    n->next = NULL;
 }
 
 /*
@@ -146,8 +172,8 @@ int main()
     childschild->name = "childs child";
     childschild->updateSelf = _updateSelf;
 
-    AddNode(root, firstchild);
-    AddNode(firstchild, childschild);
+    AddChild(root, firstchild);
+    AddChild(firstchild, childschild);
 
     TraverseTree(root);
 
